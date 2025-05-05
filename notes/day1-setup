@@ -1,1 +1,24 @@
+Date: 2025/05/05
+Goal: Get Splunk Running in Docker on M1 Mac for SOC lab work.
+
+What I did and some challenges:
+- Installed Docker Desktop and signed into Docker Hub
+- Encountered multiple errors trying to pull the Splunk image: 
+  - 401 unauthorized errors when Docker credentials weren't syncing
+  - Architecture mismatch error (linux/arm64/v8 not supported by splunk/splunk:9.1.2)
+- Solved this by forcing Docker to use --platform linux/amd64
+- Realized weak Docker Hub password might have caused auth issues
+- Changed to a stronger password and login worked.
+
+What's working:
+- Splunk UI is live on localhost:8000
+- Login successful as admin
+- Docker container is running and healthy
+- Screenshots taken:
+  - Docker container running
+  - Splunk login page
+  - Splunk dashboard post-login
+
+Next time:
+- Ingest fake logs and start learning SPL queries.
 
