@@ -45,3 +45,59 @@ Set up a Splunk Enterprise instance in the cloud, accept licensing, and confirm 
   - Web UI is accessible from browser
   - Day 1 objective is completed.
   
+
+# Day 2 – Syslog Ingestion into Splunk
+
+## Goal
+Set up a fresh data input (syslog) and confirm logs are being indexed.
+
+---
+
+## Steps
+
+### 1. Expose UDP 1514 on Splunk container
+```bash
+docker run -d --name splunk \
+  -p 8000:8000 \
+  -p 8089:8089 \
+  -p 9997:9997 \
+  -p 1514:1514/udp \
+  -e SPLUNK_GENERAL_TERMS=--accept-sgt-current-at-splunk-com \
+  -e SPLUNK_START_ARGS=--accept-license \
+  -e SPLUNK_PASSWORD="**********" \
+  -v splunk-data:/opt/splunk/var \
+  -v splunk-etc:/opt/splunk/etc \
+  splunk/splunk:latest 
+```
+### 2. Configure rsyslog forwarding
+```bash
+sudo tee /etc/rsyslog.d/90-splunk.conf > /dev/null <<'EOF'
+auth,authpriv.*    @127.0.0.1:1514
+*.info;mail.none;auth.none;authpriv.none    @127.0.0.1:1514
+EOF
+
+sudo rsyslogd -N1 && sudo systemctl restart rsyslog
+```
+### 3. Verify packets leaving host
+```bash
+sudo tcpdump -n -l -i lo udp port 1514
+```
+### 4. Send a test log
+```bash
+logger -p auth.info "SPLUNK TEST: $(hostname) $(date)"
+```
+### 5. Configure Splunk UDP input
+In Splunk Web:
+- Navigate to Settings --> Data Inputs --> UDP --> Add New
+- Port: 1514
+- Source type: syslog
+- Index: lab_syslog
+
+### 6. Verify ingestion in Splunk
+```spl
+index=lab_syslog sourcetype=syslog "SPLUNK TEST:" | table _time host program message
+```
+### Results
+- Test messages successfully ingested from VM --> rsyslog --> Splunk
+- Verified in Splunk UI with host = 172.17.0.1
+- Screenshot saved in Week1/screenshots
