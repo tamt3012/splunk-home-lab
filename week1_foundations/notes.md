@@ -3,7 +3,6 @@
 ###  Objective
 Set up a Splunk Enterprise instance in the cloud, accept licensing, and confirm access to the web UI.
 
----
 
 ###  Steps Completed
 1. **Provisioned Google Cloud VM**
@@ -45,13 +44,13 @@ Set up a Splunk Enterprise instance in the cloud, accept licensing, and confirm 
   - Web UI is accessible from browser
   - Day 1 objective is completed.
   
+---
 
 # Day 2 – Syslog Ingestion into Splunk
 
 ## Goal
 Set up a fresh data input (syslog) and confirm logs are being indexed.
 
----
 
 ## Steps
 
@@ -102,11 +101,13 @@ index=lab_syslog sourcetype=syslog "SPLUNK TEST:" | table _time host program mes
 - Verified in Splunk UI with host = 172.17.0.1
 - Screenshot saved in Week1/screenshots
 
+---
+
   # Day 3 – SPL Basics & Log Analysis
   ## Goal
   Practice Splunk Search Processing Language (SPL) skills and analyze real Linux authentication logs ingested into Splunk
 
----
+
 ## Steps
 ### 1. Confirm live data ingestion
 ```spl
@@ -165,6 +166,66 @@ index = lab_syslog testuser 1
 - Analyzed authentication events, including failed and successful su attempts
 - Validated end-to-end SIEM pipeline: Linux VM -> rsyslog -> UDP -> Splunk -> SPL analysis.
 
+___
+
+
+# Day 4 – Field Exploration, Tables, and Basic Statistics in Splunk
+
+## Goal
+Practice exploring existing fields, creating simple tables, and generating basic statistics and time-based visualizations using SPL
+
+## Steps
+### 1. Verify data exists in index
+```spl
+index = lab_syslog
+```
+this confirms events are still actively ingested
+
+### 2. Explore available fields
+fields observed: process, host, sourcetype, source, _time
+
+### 3. Count events by process
+```spl
+index = lab_syslog
+|stats count by process
+|sort - count
+```
+identified high-volume processes such as systemmd, rsyslogd, and su
+learned to aggregate events using stats
+
+### 4. Filter events by a specific process
+```spl
+index = lab_syslog process = su
+```
+```spl
+index = lab_syslog process = su
+| table _time host process message
+```
+
+### 5. Create time-based statistics
+```spl
+index = lab_syslog process = su
+|timechart count
+```
+visualized event frequency over time
+introduced time-based analysis 
+
+### 6. Perform a basic field extraction with rex
+extracted usernames from su messages:
+```spl
+index=lab_syslog process=su
+| rex "user (?<user>\w+)"
+| stats count by user
+```
+created a new field dynamically
+aggregated activity by extracted user
+
+## Results 
+- Successfully identified valid fields through exploration
+- Built tables and statistics using SPL
+- Created time-based visualizations
+- Extracted custom fields from raw log messages
+ 
 
 
 
