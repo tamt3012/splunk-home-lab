@@ -101,3 +101,79 @@ index=lab_syslog sourcetype=syslog "SPLUNK TEST:" | table _time host program mes
 - Test messages successfully ingested from VM --> rsyslog --> Splunk
 - Verified in Splunk UI with host = 172.17.0.1
 - Screenshot saved in Week1/screenshots
+
+  # Day 3 – SPL Basics & Log Analysis
+  ## Goal
+  Practice Splunk Search Processing Language (SPL) skills and analyze real Linux authentication logs ingested into Splunk
+
+---
+## Steps
+### 1. Confirm live data ingestion
+```spl
+index = lab_syslog
+```
+### 2. Perform basic SPL searches
+Queried the lab_syslog index to explore ingested data
+```spl
+index = lab_syslog
+```
+Filtered events by keyword
+```spl
+index = lab_syslog "SPLUNK LAB"
+```
+Filtered events by program
+```spl
+index = lab_syslog program = su
+```
+### 3. Apply time range filtering
+Limit searches to recent activity using time-based filters
+```spl
+index = lab_syslog ealiest = -15m
+```
+This limits the results to most recent 15 minutes.
+
+### 4. Summarize logs using stats
+Used aggregation to identify which programs generated the most log activity
+```
+index = lab_syslog
+| stats count by program
+```
+this helped identify authentication-related activity (su, sudo, logger)
+
+### 5. Generate and analyze authentication events
+Created real authentication telemetry on the Linux VM
+```bash
+sudo useradd testuser1
+su testuser1
+sudo passwd testuser1
+su testuser1
+exit
+```
+Analyzed authentication activity in Splunk
+```spl
+index = lab_syslog testuser 1
+```
+### Observed: 
+- Failed attempts before a password was set
+- Successful login after the password was created
+- Sessions open and close events
+
+### Results
+- Confirmed real-time ingestion of Linux syslog data into Splunk
+- Successfully queried logs using SPL (indexing, filtering, and time scoping)
+- Summarized log activity using stats
+- Analyzed authentication events, including failed and successful su attempts
+- Validated end-to-end SIEM pipeline: Linux VM -> rsyslog -> UDP -> Splunk -> SPL analysis.
+
+
+
+
+
+
+
+
+
+
+
+
+  
