@@ -225,7 +225,92 @@ aggregated activity by extracted user
 - Built tables and statistics using SPL
 - Created time-based visualizations
 - Extracted custom fields from raw log messages
- 
+
+___
+# Day 5 – Security Dashboards in Splunk
+## Goal
+Create multiple security-focused dashboards in Splunk to visualize authentication activity, process behavior, and overall syslog health using real ingested data.
+
+These dashboards show that raw logs can be transformed into actionable security insights.
+
+## Dashboard 1: Syslog Health Overview
+
+### Purpose
+Monitor overall log ingestion health to ensure data is flowing consistently and identify spikes or drop-offs in event volume.
+
+### Panel 1 – Syslog Events Over Time
+```spl
+index=lab_syslog
+| timechart span=1h count
+```
+- column chart
+- shows hourly syslog ingestion volume
+
+### Panel 2 – Event by Sourcetype
+```spl
+index = lab_syslog
+|stats count by sourcetype
+```
+- bar chart
+- confirms all ingested events are classified under the syslog source type.
+
+### Panel 3 – Eevnts by Host
+```spl
+index = lab_syslog
+|stats count by host
+```
+- bar chart
+- validates log volume coming from the lab VM host
+
+## Dashboard 2: Authentication Monitoring
+
+### Purpose
+Track privilege escalation activity using su logs to identify potential misuse or abnormal authentication behavior.
+
+### Panel 1 – su Attempts Over Time
+```spl
+index = lab_syslog process = su
+|timechart count
+```
+- column chart
+- displays frequency of su usage over time
+
+### Panel 2 - su Usage by User
+```spl
+index = lab_syslog process = su
+| rex "user (?<user>\w+)"
+|stats count by user
+```
+- bar chart
+- shows which users are attempting privilege escalation
+
+## Dashboard 3: Process Activity Monitoring
+
+### Purpose
+Establish a baseline of process behavior to identify high-volumn or abnormal process activity.
+
+### Panel 1 – Process Activity Over Time
+```spl
+index = lab_syslog
+| timechart count by process limit=5
+```
+- stacked column chart
+- displays activity trends for the most active processes
+
+### Panel 2 – Total Process Event Volume
+```spl
+index = lab_syslog
+|timechart span=1h count
+```
+- column chart
+- shows overall process-related event volume over time
+
+## Results
+- Built 3 functional security dashboards
+- Added multiple panels per dashboard
+- Used real ingested syslog data
+- Applied SPL commands such as stats, timechart, and rex
+- Gained hands-on experience with SOC-style monitoring workflows.
 
 
 
