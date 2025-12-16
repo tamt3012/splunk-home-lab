@@ -346,7 +346,16 @@ filter syslog event by process name dynamically
 - parameterized macros enable flexible filtering
 - knowledge objects form the backbone of scalable SOC workflows
 
+# Week 1 Reflection
+This week focused on setting up Splunk and understanding how real log data flows from a system into a SIEM.
 
+I successfully deployed Splunk Enterprise on a Google Cloud VM using Docker and configured syslog ingestion from the same VM. By forwarding Linux syslog data into Splunk, I worked with real authentication and system activity instead of sample data.
+
+Throughout the week, I practiced core SPL skills such as filtering, time-based searches, aggregations with `stats`, and visualizations with `timechart`. I analyzed authentication events (`su`), observed failed and successful login attempts, and built dashboards to monitor syslog health, authentication activity, and process behavior.
+
+I also learned how Splunk knowledge objects like saved searches and macros help make searches reusable and consistent, even though alerting was limited in the Splunk Free version.
+
+Overall, this week gave me a solid foundation in SIEM basics, log ingestion, and security-focused analysis. I’m more comfortable navigating Splunk, asking the right questions of log data, and understanding how these skills apply to real SOC workflows.
 
 
 
