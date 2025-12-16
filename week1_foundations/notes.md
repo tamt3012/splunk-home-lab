@@ -312,8 +312,39 @@ index = lab_syslog
 - Applied SPL commands such as stats, timechart, and rex
 - Gained hands-on experience with SOC-style monitoring workflows.
 
+___
 
+# Day 6 – Splunk Knowledge Object (Saved Searches & Macros)
 
+## Goal
+Understand and implement Splunk knowledge objects to make searches reusable and scalable, focusing on **saved searches** and **macros** (alerts skipped due to Splunk Free limitations)
+
+## Saved Searches
+```spl
+index=lab_syslog process=su
+| rex "user (?<user>\w+)"
+| stats count by user
+| sort - count
+```
+
+## Search Macros
+### Base Syslog Search
+create a resuable base search for all syslog analysis
+```spl
+`syslog_base`
+```
+
+### Process Filter Macro
+filter syslog event by process name dynamically
+```spl
+`proc_filter(1)`
+```
+
+## Results
+- saved searches improve analyst efficiency
+- macros enforce consistent detection logic
+- parameterized macros enable flexible filtering
+- knowledge objects form the backbone of scalable SOC workflows
 
 
 
