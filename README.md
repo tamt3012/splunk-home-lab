@@ -4,8 +4,6 @@
 This repository documents my **Splunk Home Lab project**, where I simulate a mini Security Operation Center (SOC).
 The goal is to gain **hands-on experience with SIEM, log analysis, detection engineering, and threat hunting**, while building a portfolio of real-world skills.
 
-I'll be following a 6-week roadmap that covers everything from Splunk basics to a red team vs. blue team capstone.
-
 ---
 
 ## Objectives
