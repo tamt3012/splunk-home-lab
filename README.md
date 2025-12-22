@@ -13,9 +13,6 @@ I'll be following a 6-week roadmap that covers everything from Splunk basics to 
 - Ingest multiple log sources (Windows, Linux, firewall, simulated attacks).  
 - Map detections to **MITRE ATT&CK techniques**.  
 - Practice SOC workflows: alerting, incident notes, dashboards.  
-- Explore intermediate Splunk admin topics (indexes, lookups, RBAC, performance tuning).  
-- Perform hands-on **threat hunting** with custom queries.  
-- Simulate attacker activity and detect it.  
 - Package everything into a **capstone dashboard + incident report** for my portfolio.  
 
 ---
