@@ -32,6 +32,5 @@ The goal is to gain **hands-on experience with SIEM, log analysis, detection eng
 ### Week 3 – SOC Analyst Practice
 - Ingest sample attack dataset (e.g., Splunk BOTS)
 - Identify suspicious patterns
-- Build detections
 - Write incident notes
-
+- Wrap-Up 
