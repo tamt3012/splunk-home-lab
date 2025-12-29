@@ -33,4 +33,4 @@ The goal is to gain **hands-on experience with SIEM, log analysis, detection eng
 - Ingest sample attack dataset (e.g., Splunk BOTS)
 - Identify suspicious patterns
 - Write incident notes
-- Wrap-Up 
+- Wrap-Up + Report
